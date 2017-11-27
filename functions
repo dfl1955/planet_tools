@@ -1,0 +1,28 @@
+# Dave Levy CC BY-SA V2.1
+showsize() 
+{
+echo `wc -c $1 | cut -c-7`
+}
+
+listplanets()
+{
+for planet in `ls ${HOME}/venus/venus/Logs/*.i`
+do
+	echo `basename ${planet} .i`
+done
+}
+
+export BASEDIR=/kunden/homepages/19/d106342642/htdocs/venus/venus
+export PATH=/kunden/homepages/19/d106342642/htdocs/xslt/bin:${PATH}
+
+stringisurl()
+{
+	case $1 in
+	http\://*)  	echo $1 is a web URL
+			return
+			;;
+	*)		echo $1 is not a web URL 
+			return 100
+			;;
+	esac
+}

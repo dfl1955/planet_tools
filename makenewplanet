@@ -1,0 +1,107 @@
+#/bin/sh
+
+# Author : Dave Levy CC BY-SA Version 1.0
+
+# 1.1  Portability changes and 1st run test, amend the model code
+
+VER=1.1
+USAGE="$0 [-h|-?|-help|--help]|[-v|-ver|--version]|[-d|-destroy]|[-m|-model modelname ] name"
+
+# Do I set BASEDIR or PLANET_HOME in functions
+BASEDIR=/usr/local/venus
+. ${BASEDIR}/functions
+
+makeplanet(){
+	echo making planet $1
+	cd $BASEDIR
+	mkdir $1
+	echo directory $1 made
+	# do I need to create the outputdir as well
+	#
+	touch Logs/$1.i
+	echo log control file made for $1
+	echo -n Zeroising log control file ...' '
+	# should I use a PATH or function here
+	${BASEDIR}/makelogctrzero $1
+}
+
+destroyplanet() {
+	echo destroying planet $1
+	cd $BASEDIR
+	cd Logs
+	rm -f $1.log* || echo No logs
+	rm $1.i || echo No log control file
+	cd $BASEDIR
+	if [ -d $1 ]
+	then
+		echo -n we have a directory called $1...' '
+		rm -rf $1
+		echo and now we don\'t
+	else
+		echo No directory 
+	fi
+}
+
+copymodel() {
+# must have the target directory specified as $1 arg to function
+	cd $BASEDIR/$modelname
+	find . -print | cpio -pvdum $BASEDIR/$1
+	cd $BASEDIR
+}
+# not used
+VAL_MODELS="DFL mingle"
+
+
+case $1 in
+-h|-\?|-help|--help) 	echo $USAGE ; exit ;;
+-v|-ver|--version)  	echo $VER ; exit ;;
+-d|-destroy|--destroy)	echo destroy $2 ; shift 
+		if [ -z $1 ]
+		then
+			echo must have a value for 2nd argument to destroy
+			exit 100
+		fi
+		if [ ! -d $1 ]
+		then
+			echo $1 must be a directory if destroy requested
+			exit 200
+		fi
+		destroyplanet $1
+		if [ $? ]
+		then
+			echo planet $1 expunged
+			exit
+		fi
+		;;
+-m|-model)	modelname=$2
+		shift; shift
+		if [ ! -d $modelname ]
+		then
+			echo $modelname can\'t be found
+			exit 100
+		fi
+		echo planet $1 will be creating using $modelname as a model
+		;;		
+esac
+			
+if [ -z $1 ]
+then
+	echo mandatory planet name needed
+	exit 100
+fi
+
+if [ ! -d Logs ]
+then
+	echo Opps no Log Dir, have you run this before\?
+	exit
+fi
+
+makeplanet $1
+if [ ! -z $modelname]
+then 
+	if [ -d $modelname ]
+	then
+		echo using model $modelname
+		#copymodel $modelname
+	fi
+fi

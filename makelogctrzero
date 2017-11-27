@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Dave Levy CC BY-SA V1.2
+
+# 1.2 portability changes
+
+. ./functions
+
+logdir=${BASEDIR}/Logs
+
+Usage="$0 name"
+
+if [ -w ${logdir}/$1.i ]
+then
+	echo 0 > ${logdir}/$1.i
+	echo Done 
+else
+	echo Can\'t
+	exit 100
+fi 

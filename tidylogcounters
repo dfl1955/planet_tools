@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#set -x 
+
+. $HOME/venus/venus/functions
+
+for counterfile in $(ls Logs/*.i)
+do
+	echo zeroise ${counterfile}
+	echo 0 > $counterfile
+	cat $counterfile
+done

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+stris()
+{
+case $1 in
+http\://*)  echo is URL
+		return
+		;;
+*)		echo is not URL 
+		return 1
+		;;
+esac
+}
+stris $1

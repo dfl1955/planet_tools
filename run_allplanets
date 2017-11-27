@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Author: Dave Levy
+
+# CC BY-SA
+
+Pname=$0
+PVer="1.0"
+
+. /kunden/homepages/19/d106342642/htdocs/venus/venus/functions
+
+for name in `listplanets`
+do
+	$BASEDIR/run_planet.sh $name
+done
+

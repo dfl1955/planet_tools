@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Author : Dave Levy, London  CC BY-SA  Version 1.0
+PVer=1.0
+Pname=$0
+
+case $1 in
+-t|-tidy|--tidy) 	rm /tmp/grc*
+		 	echo Done
+		 	exit ;;
+-l|-list|--list) 	ls /tmp/grc*
+		 	echo list workfiles... done
+		 	exit ;;
+-v|-ver|--version) 	echo $Pname $PVer CC BY-SA
+			exit ;;
+esac
+
+download=/tmp/grc$$
+wget -O $download $1  > /dev/null 2>&1
+if [ $? -ne '0' ]
+then
+	echo Can\'t get URL $1, wget failed
+	exit 100
+else
+	echo $download
+fi
+

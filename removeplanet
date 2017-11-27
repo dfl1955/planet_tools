@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Author : Dave Levy CC BY-SA Ver 1.0
+
+. ./functions
+
+${BASEDIR}/makenewplanet -d $1
+
